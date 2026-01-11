@@ -2,47 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvWelcome"
-        android:text="Welcome"
+        android:text="Request Help"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/tvRole"
-        android:text="Role:"
-        android:textSize="16sp"
-        android:layout_marginBottom="24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <!-- Buttons for next step -->
-    <Button
-        android:id="@+id/btnRequestHelp"
-        android:text="Request Help"
+    <EditText
+        android:id="@+id/etTitle"
+        android:hint="Help Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/btnOfferHelp"
-        android:text="Offer Help"
+    <EditText
+        android:id="@+id/etDescription"
+        android:hint="Describe your problem"
         android:layout_marginTop="12dp"
+        android:minLines="3"
+        android:gravity="top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/btnMyJobs"
-        android:text="My Jobs"
-        android:layout_marginTop="12dp"
+        android:id="@+id/btnSubmitRequest"
+        android:text="Submit Request"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
 
 </LinearLayout>

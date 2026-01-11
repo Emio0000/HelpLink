@@ -25,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
         val goToSignup = findViewById<TextView>(R.id.goToSignup)
 
         loginBtn.setOnClickListener {
+
             val email = emailInput.text.toString().trim()
             val password = passwordInput.text.toString().trim()
 
@@ -44,7 +45,6 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
 
-        // 👉 Go to Sign Up page
         goToSignup.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }

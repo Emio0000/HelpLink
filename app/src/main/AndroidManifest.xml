@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.helplink">
 
-    <!-- Required for Firebase -->
+    <!-- Internet permission for Firebase -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,24 +13,34 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelpLink">
 
-        <!-- Home Screen -->
+        <!-- HOME SCREEN -->
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
 
-        <!-- Sign Up Screen -->
+        <!-- REQUEST HELP SCREEN -->
+        <activity
+            android:name=".RequestHelpActivity"
+            android:exported="false" />
+
+        <!-- VIEW REQUESTS (OFFER HELP) -->
+        <activity
+            android:name=".ViewRequestsActivity"
+            android:exported="false" />
+
+        <!-- MY ACCEPTED JOBS -->
+        <activity
+            android:name=".MyJobsActivity"
+            android:exported="false" />
+
+        <!-- SIGN UP SCREEN -->
         <activity
             android:name=".SignupActivity"
             android:exported="false" />
 
-        <!-- Login Screen -->
+        <!-- LOGIN SCREEN (APP STARTS HERE) -->
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-
-        <!-- Launcher -->
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
