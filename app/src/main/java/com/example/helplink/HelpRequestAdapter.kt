@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HelpRequestAdapter(
@@ -42,19 +43,43 @@ class HelpRequestAdapter(
         holder.btnAccept.setOnClickListener {
             val user = auth.currentUser ?: return@setOnClickListener
 
+            val helperId = user.uid
+            val helperEmail = user.email ?: ""
+            val requesterId = item.requesterId
+            val requesterEmail = item.requesterEmail
+            val jobId = item.id
+
+            // 1️⃣ Update help request
             db.collection("help_requests")
-                .document(item.id)
+                .document(jobId)
                 .update(
                     mapOf(
                         "status" to "accepted",
-                        "helperId" to user.uid,
-                        "helperEmail" to user.email
+                        "helperId" to helperId,
+                        "helperEmail" to helperEmail
                     )
                 )
                 .addOnSuccessListener {
+
+                    // 2️⃣ CREATE CHAT DOCUMENT (WITH EMAILS ✅)
+                    val chatMap = hashMapOf(
+                        "jobId" to jobId,
+                        "requesterId" to requesterId,
+                        "requesterEmail" to requesterEmail,
+                        "helperId" to helperId,
+                        "helperEmail" to helperEmail,
+                        "participants" to listOf(requesterId, helperId),
+                        "lastMessage" to "",
+                        "updatedAt" to FieldValue.serverTimestamp()
+                    )
+
+                    db.collection("chats")
+                        .document(jobId) // jobId = chatId
+                        .set(chatMap)
+
                     Toast.makeText(
                         holder.itemView.context,
-                        "Request accepted",
+                        "Request accepted & chat created",
                         Toast.LENGTH_SHORT
                     ).show()
 

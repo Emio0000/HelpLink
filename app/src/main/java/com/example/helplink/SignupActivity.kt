@@ -53,6 +53,8 @@ class SignupActivity : AppCompatActivity() {
                     val userMap = hashMapOf(
                         "email" to userEmail,
                         "role" to "requester",
+                        "rewardPoints" to 0,
+                        "completedTasks" to 0,
                         "createdAt" to System.currentTimeMillis()
                     )
 
@@ -81,3 +83,4 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 }
+

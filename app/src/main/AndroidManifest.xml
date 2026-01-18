@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.helplink">
 
-    <!-- Internet permission for Firebase -->
+    <!-- Internet permission for Firebase & Maps -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -33,10 +33,31 @@
             android:name=".MyJobsActivity"
             android:exported="false" />
 
+        <!-- 🏆 LEADERBOARD -->
+        <activity
+            android:name=".LeaderboardActivity"
+            android:exported="false" />
+
+        <!-- 💬 CHAT -->
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+
+        <!-- 🗺️ MAP (NEARBY TASKS – FUTURE) -->
+        <activity
+            android:name=".MapActivity"
+            android:exported="false" />
+
         <!-- SIGN UP SCREEN -->
         <activity
             android:name=".SignupActivity"
             android:exported="false" />
+
+        <!-- CHAT SCREEN -->
+        <activity
+            android:name=".ChatsActivity"
+            android:exported="false" />
+
 
         <!-- LOGIN SCREEN (APP STARTS HERE) -->
         <activity

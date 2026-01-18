@@ -21,7 +21,7 @@ class MyJobsActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.rvMyJobs)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val adapter = HelpRequestAdapter(jobList)
+        val adapter = MyJobsAdapter(jobList)
         recyclerView.adapter = adapter
 
         auth = FirebaseAuth.getInstance()
@@ -31,6 +31,7 @@ class MyJobsActivity : AppCompatActivity() {
 
         db.collection("help_requests")
             .whereEqualTo("helperId", user.uid)
+            .whereEqualTo("status", "accepted")
             .get()
             .addOnSuccessListener { result ->
                 jobList.clear()

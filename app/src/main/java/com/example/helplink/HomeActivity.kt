@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,49 +22,62 @@ class HomeActivity : AppCompatActivity() {
 
         val tvWelcome = findViewById<TextView>(R.id.tvWelcome)
         val tvRole = findViewById<TextView>(R.id.tvRole)
+        val tvRewardPoints = findViewById<TextView>(R.id.tvRewardPoints)
+        val tvBadge = findViewById<TextView>(R.id.tvBadge)
+
         val btnRequestHelp = findViewById<Button>(R.id.btnRequestHelp)
         val btnOfferHelp = findViewById<Button>(R.id.btnOfferHelp)
         val btnMyJobs = findViewById<Button>(R.id.btnMyJobs)
+        val btnLeaderboard = findViewById<Button>(R.id.btnLeaderboard)
+        val btnChats = findViewById<Button>(R.id.btnChats) // ✅ NEW
 
-        val currentUser = auth.currentUser
+        val user = auth.currentUser ?: return
+        val uid = user.uid
 
-        if (currentUser == null) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val uid = currentUser.uid
-
-        // 🔥 LOAD USER INFO
+        // 🔥 LIVE USER DATA (points, badge, role)
         db.collection("users")
             .document(uid)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document != null && document.exists()) {
-                    val email = document.getString("email")
-                    val role = document.getString("role")
+            .addSnapshotListener { doc, _ ->
+                if (doc != null && doc.exists()) {
+
+                    val email = doc.getString("email") ?: "User"
+                    val role = doc.getString("role") ?: "user"
+                    val points = doc.getLong("rewardPoints") ?: 0
 
                     tvWelcome.text = "Welcome, $email"
                     tvRole.text = "Role: $role"
+                    tvRewardPoints.text = points.toString()
+                    tvBadge.text = getBadge(points)
                 }
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed to load user data", Toast.LENGTH_SHORT).show()
-            }
 
-        // ✅ REQUEST HELP
         btnRequestHelp.setOnClickListener {
             startActivity(Intent(this, RequestHelpActivity::class.java))
         }
 
-        // ✅ OFFER HELP → VIEW OPEN REQUESTS
         btnOfferHelp.setOnClickListener {
             startActivity(Intent(this, ViewRequestsActivity::class.java))
         }
 
-        // ✅ MY JOBS → ACCEPTED REQUESTS
         btnMyJobs.setOnClickListener {
             startActivity(Intent(this, MyJobsActivity::class.java))
+        }
+
+        btnLeaderboard.setOnClickListener {
+            startActivity(Intent(this, LeaderboardActivity::class.java))
+        }
+
+        // ✅ OPEN CHAT LIST (INDEPENDENT PAGE)
+        btnChats.setOnClickListener {
+            startActivity(Intent(this, ChatsActivity::class.java))
+        }
+    }
+
+    private fun getBadge(points: Long): String {
+        return when {
+            points >= 100 -> "Badge: Gold 🥇"
+            points >= 50 -> "Badge: Silver 🥈"
+            else -> "Badge: Bronze 🥉"
         }
     }
 }
