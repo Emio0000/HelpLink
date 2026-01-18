@@ -20,10 +20,12 @@ class MapsActivity : AppCompatActivity() {
 
     private lateinit var map: MapView
     private lateinit var locationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+
     private lateinit var db: FirebaseFirestore
     private lateinit var auth: FirebaseAuth
 
-    private var userMarker: Marker? = null   // 🔥 IMPORTANT
+    private var userMarker: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +33,12 @@ class MapsActivity : AppCompatActivity() {
         Configuration.getInstance().userAgentValue = packageName
         setContentView(R.layout.activity_maps)
 
+        // 🗺 Map setup
         map = findViewById(R.id.map)
         map.setMultiTouchControls(true)
+        map.controller.setZoom(17.0)
 
+        // 📍 Location + Firebase
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
@@ -42,45 +47,52 @@ class MapsActivity : AppCompatActivity() {
         loadNearbyTasks()
     }
 
-    // 📍 Live GPS (DO NOT clear overlays)
+    // 📍 Live GPS tracking
     private fun showUserLocation() {
         if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.ACCESS_FINE_LOCATION
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) return
 
         val request = LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY, 3000
+            Priority.PRIORITY_HIGH_ACCURACY,
+            3000
         ).build()
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(result: LocationResult) {
+                val loc = result.lastLocation ?: return
+                val point = GeoPoint(loc.latitude, loc.longitude)
+
+                map.controller.setCenter(point)
+
+                if (userMarker == null) {
+                    userMarker = Marker(map).apply {
+                        position = point
+                        title = "You are here"
+                        setAnchor(
+                            Marker.ANCHOR_CENTER,
+                            Marker.ANCHOR_BOTTOM
+                        )
+                    }
+                    map.overlays.add(userMarker)
+                } else {
+                    userMarker!!.position = point
+                }
+
+                map.invalidate()
+            }
+        }
 
         locationClient.requestLocationUpdates(
             request,
-            object : LocationCallback() {
-                override fun onLocationResult(result: LocationResult) {
-                    val loc = result.lastLocation ?: return
-                    val point = GeoPoint(loc.latitude, loc.longitude)
-
-                    map.controller.setZoom(17.0)
-                    map.controller.setCenter(point)
-
-                    if (userMarker == null) {
-                        userMarker = Marker(map).apply {
-                            position = point
-                            title = "You are here"
-                        }
-                        map.overlays.add(userMarker)
-                    } else {
-                        userMarker!!.position = point
-                    }
-
-                    map.invalidate()
-                }
-            },
+            locationCallback,
             mainLooper
         )
     }
 
-    // 🧭 Load tasks ONCE and keep them
+    // 🧭 Load help requests (task markers)
     private fun loadNearbyTasks() {
         db.collection("help_requests")
             .whereEqualTo("status", "open")
@@ -88,7 +100,7 @@ class MapsActivity : AppCompatActivity() {
 
                 if (docs == null) return@addSnapshotListener
 
-                // Remove ONLY task markers
+                // Remove only task markers (keep user marker)
                 map.overlays.removeAll {
                     it is Marker && it != userMarker
                 }
@@ -97,11 +109,16 @@ class MapsActivity : AppCompatActivity() {
                     val lat = doc.getDouble("lat") ?: continue
                     val lng = doc.getDouble("lng") ?: continue
 
-                    val marker = Marker(map)
-                    marker.position = GeoPoint(lat, lng)
-                    marker.title = doc.getString("title")
-                    marker.subDescription =
-                        "By: ${doc.getString("requesterEmail")}"
+                    val marker = Marker(map).apply {
+                        position = GeoPoint(lat, lng)
+                        title = doc.getString("title")
+                        subDescription =
+                            "By: ${doc.getString("requesterEmail")}"
+                        setAnchor(
+                            Marker.ANCHOR_CENTER,
+                            Marker.ANCHOR_BOTTOM
+                        )
+                    }
 
                     marker.setOnMarkerClickListener { _, _ ->
                         showAcceptDialog(
@@ -121,7 +138,7 @@ class MapsActivity : AppCompatActivity() {
             }
     }
 
-    // 💬 Accept dialog
+    // 💬 Accept help dialog
     private fun showAcceptDialog(
         jobId: String,
         title: String,
@@ -164,10 +181,20 @@ class MapsActivity : AppCompatActivity() {
                     .set(chatMap)
 
                 // 3️⃣ Go to chats
-                startActivity(Intent(this, ChatsActivity::class.java))
+                startActivity(
+                    Intent(this, ChatsActivity::class.java)
+                )
                 finish()
             }
             .setNegativeButton("Cancel", null)
             .show()
+    }
+
+    // 🛑 VERY IMPORTANT: stop GPS updates
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::locationCallback.isInitialized) {
+            locationClient.removeLocationUpdates(locationCallback)
+        }
     }
 }
