@@ -20,6 +20,7 @@ class HomeActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
+        // UI
         val tvWelcome = findViewById<TextView>(R.id.tvWelcome)
         val tvRole = findViewById<TextView>(R.id.tvRole)
         val tvRewardPoints = findViewById<TextView>(R.id.tvRewardPoints)
@@ -29,12 +30,13 @@ class HomeActivity : AppCompatActivity() {
         val btnOfferHelp = findViewById<Button>(R.id.btnOfferHelp)
         val btnMyJobs = findViewById<Button>(R.id.btnMyJobs)
         val btnLeaderboard = findViewById<Button>(R.id.btnLeaderboard)
-        val btnChats = findViewById<Button>(R.id.btnChats) // ✅ NEW
+        val btnChats = findViewById<Button>(R.id.btnChats)
+        val btnMaps = findViewById<Button>(R.id.btnMaps)
 
         val user = auth.currentUser ?: return
         val uid = user.uid
 
-        // 🔥 LIVE USER DATA (points, badge, role)
+        // 🔥 Load user data
         db.collection("users")
             .document(uid)
             .addSnapshotListener { doc, _ ->
@@ -51,6 +53,7 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
 
+        // 🔘 Navigation buttons
         btnRequestHelp.setOnClickListener {
             startActivity(Intent(this, RequestHelpActivity::class.java))
         }
@@ -67,9 +70,12 @@ class HomeActivity : AppCompatActivity() {
             startActivity(Intent(this, LeaderboardActivity::class.java))
         }
 
-        // ✅ OPEN CHAT LIST (INDEPENDENT PAGE)
         btnChats.setOnClickListener {
             startActivity(Intent(this, ChatsActivity::class.java))
+        }
+
+        btnMaps.setOnClickListener {
+            startActivity(Intent(this, MapsActivity::class.java))
         }
     }
 

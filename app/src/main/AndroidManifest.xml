@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.helplink">
 
-    <!-- Internet permission for Firebase & Maps -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Location for Maps -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -13,61 +17,60 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelpLink">
 
-        <!-- HOME SCREEN -->
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
-
-        <!-- REQUEST HELP SCREEN -->
-        <activity
-            android:name=".RequestHelpActivity"
-            android:exported="false" />
-
-        <!-- VIEW REQUESTS (OFFER HELP) -->
-        <activity
-            android:name=".ViewRequestsActivity"
-            android:exported="false" />
-
-        <!-- MY ACCEPTED JOBS -->
-        <activity
-            android:name=".MyJobsActivity"
-            android:exported="false" />
-
-        <!-- 🏆 LEADERBOARD -->
-        <activity
-            android:name=".LeaderboardActivity"
-            android:exported="false" />
-
-        <!-- 💬 CHAT -->
-        <activity
-            android:name=".ChatActivity"
-            android:exported="false" />
-
-        <!-- 🗺️ MAP (NEARBY TASKS – FUTURE) -->
-        <activity
-            android:name=".MapActivity"
-            android:exported="false" />
-
-        <!-- SIGN UP SCREEN -->
-        <activity
-            android:name=".SignupActivity"
-            android:exported="false" />
-
-        <!-- CHAT SCREEN -->
-        <activity
-            android:name=".ChatsActivity"
-            android:exported="false" />
-
-
-        <!-- LOGIN SCREEN (APP STARTS HERE) -->
+        <!-- LOGIN (ENTRY POINT) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!-- HOME -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"/>
+
+        <!-- REQUEST HELP -->
+        <activity
+            android:name=".RequestHelpActivity"
+            android:exported="false"/>
+
+        <!-- OFFER HELP -->
+        <activity
+            android:name=".ViewRequestsActivity"
+            android:exported="false"/>
+
+        <!-- MY JOBS -->
+        <activity
+            android:name=".MyJobsActivity"
+            android:exported="false"/>
+
+        <!-- LEADERBOARD -->
+        <activity
+            android:name=".LeaderboardActivity"
+            android:exported="false"/>
+
+        <!-- CHAT LIST -->
+        <activity
+            android:name=".ChatsActivity"
+            android:exported="false"/>
+
+        <!-- SINGLE CHAT -->
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false"/>
+
+        <!-- MAPS -->
+        <activity
+            android:name=".MapsActivity"
+            android:exported="false"/>
+
+        <!-- SIGN UP -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false"/>
 
     </application>
 

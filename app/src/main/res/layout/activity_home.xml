@@ -89,6 +89,20 @@
         android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btnMap"
+        android:text="Nearby Tasks 🗺️"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btnMaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MAPS 📍"
+        android:layout_marginTop="8dp"/>
+
+
 
 
 </LinearLayout>
