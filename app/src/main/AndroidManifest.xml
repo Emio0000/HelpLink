@@ -2,14 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.helplink">
 
-    <!-- Internet -->
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET"/>
-
-    <!-- Location for Maps -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="HelpLink"
@@ -17,15 +17,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelpLink">
 
-        <!-- LOGIN (ENTRY POINT) -->
+        <!-- ADMIN -->
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false"/>
+
+        <!-- GUEST WAITING -->
+        <activity
+            android:name=".GuestWaitingActivity"
+            android:exported="false"/>
+
+        <!-- LOGIN (LAUNCHER) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
+
+        <!-- SIGN UP -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false"/>
 
         <!-- HOME -->
         <activity
@@ -62,15 +79,21 @@
             android:name=".ChatActivity"
             android:exported="false"/>
 
-        <!-- MAPS -->
+        <!-- MAP -->
         <activity
             android:name=".MapsActivity"
             android:exported="false"/>
 
-        <!-- SIGN UP -->
-        <activity
-            android:name=".SignupActivity"
-            android:exported="false"/>
+        <!-- FIREBASE CLOUD MESSAGING -->
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+
+        </service>
 
     </application>
 

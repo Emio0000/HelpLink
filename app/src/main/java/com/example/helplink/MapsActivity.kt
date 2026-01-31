@@ -15,6 +15,8 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import android.widget.Button
+import android.widget.Toast
 
 class MapsActivity : AppCompatActivity() {
 
@@ -26,6 +28,7 @@ class MapsActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     private var userMarker: Marker? = null
+    private var lastLocation: GeoPoint? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,22 +36,34 @@ class MapsActivity : AppCompatActivity() {
         Configuration.getInstance().userAgentValue = packageName
         setContentView(R.layout.activity_maps)
 
-        // 🗺 Map setup
         map = findViewById(R.id.map)
         map.setMultiTouchControls(true)
         map.controller.setZoom(17.0)
 
-        // 📍 Location + Firebase
+        val btnRecenter = findViewById<Button>(R.id.btnRecenter)
+
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
         showUserLocation()
         loadNearbyTasks()
+
+        // Recenter button
+        btnRecenter.setOnClickListener {
+            if (lastLocation != null) {
+                map.controller.setCenter(lastLocation)
+            } else {
+                Toast.makeText(this, "Location not ready yet", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    // 📍 Live GPS tracking
+    // ======================
+    // LIVE USER LOCATION
+    // ======================
     private fun showUserLocation() {
+
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -64,6 +79,7 @@ class MapsActivity : AppCompatActivity() {
             override fun onLocationResult(result: LocationResult) {
                 val loc = result.lastLocation ?: return
                 val point = GeoPoint(loc.latitude, loc.longitude)
+                lastLocation = point
 
                 map.controller.setCenter(point)
 
@@ -92,20 +108,23 @@ class MapsActivity : AppCompatActivity() {
         )
     }
 
-    // 🧭 Load help requests (task markers)
+    // ======================
+    // LOAD TASK MARKERS
+    // ======================
     private fun loadNearbyTasks() {
+
         db.collection("help_requests")
             .whereEqualTo("status", "open")
             .addSnapshotListener { docs, _ ->
 
                 if (docs == null) return@addSnapshotListener
 
-                // Remove only task markers (keep user marker)
                 map.overlays.removeAll {
                     it is Marker && it != userMarker
                 }
 
                 for (doc in docs) {
+
                     val lat = doc.getDouble("lat") ?: continue
                     val lng = doc.getDouble("lng") ?: continue
 
@@ -121,6 +140,7 @@ class MapsActivity : AppCompatActivity() {
                     }
 
                     marker.setOnMarkerClickListener { _, _ ->
+
                         showAcceptDialog(
                             jobId = doc.id,
                             title = doc.getString("title") ?: "",
@@ -128,6 +148,7 @@ class MapsActivity : AppCompatActivity() {
                             requesterId = doc.getString("requesterId") ?: "",
                             requesterEmail = doc.getString("requesterEmail") ?: ""
                         )
+
                         true
                     }
 
@@ -138,7 +159,9 @@ class MapsActivity : AppCompatActivity() {
             }
     }
 
-    // 💬 Accept help dialog
+    // ======================
+    // ACCEPT TASK DIALOG
+    // ======================
     private fun showAcceptDialog(
         jobId: String,
         title: String,
@@ -146,6 +169,7 @@ class MapsActivity : AppCompatActivity() {
         requesterId: String,
         requesterEmail: String
     ) {
+
         val user = auth.currentUser ?: return
 
         AlertDialog.Builder(this)
@@ -155,7 +179,6 @@ class MapsActivity : AppCompatActivity() {
             )
             .setPositiveButton("Accept Task") { _, _ ->
 
-                // 1️⃣ Update job
                 db.collection("help_requests")
                     .document(jobId)
                     .update(
@@ -166,7 +189,6 @@ class MapsActivity : AppCompatActivity() {
                         )
                     )
 
-                // 2️⃣ Create chat
                 val chatMap = hashMapOf(
                     "jobId" to jobId,
                     "requesterId" to requesterId,
@@ -180,7 +202,6 @@ class MapsActivity : AppCompatActivity() {
                     .document(jobId)
                     .set(chatMap)
 
-                // 3️⃣ Go to chats
                 startActivity(
                     Intent(this, ChatsActivity::class.java)
                 )
@@ -190,7 +211,9 @@ class MapsActivity : AppCompatActivity() {
             .show()
     }
 
-    // 🛑 VERY IMPORTANT: stop GPS updates
+    // ======================
+    // STOP GPS
+    // ======================
     override fun onDestroy() {
         super.onDestroy()
         if (::locationCallback.isInitialized) {

@@ -36,14 +36,16 @@ class MyJobsAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val job = list[position]
 
         holder.tvTitle.text = job.title
         holder.tvDescription.text = job.description
         holder.tvEmail.text = "Requester: ${job.requesterEmail}"
 
-        // 💬 CHAT BUTTON
+        // ---------------- CHAT ----------------
         holder.btnChat.setOnClickListener {
+
             val context = holder.itemView.context
 
             db.collection("chats")
@@ -62,14 +64,17 @@ class MyJobsAdapter(
             context.startActivity(intent)
         }
 
-        // ✅ COMPLETE JOB + REWARD
+        // ------------ COMPLETE JOB -------------
         holder.btnComplete.setOnClickListener {
+
             val uid = auth.currentUser?.uid ?: return@setOnClickListener
+            val context = holder.itemView.context
 
             val jobRef = db.collection("help_requests").document(job.id)
             val userRef = db.collection("users").document(uid)
 
             db.runTransaction { transaction ->
+
                 val jobSnap = transaction.get(jobRef)
                 val userSnap = transaction.get(userRef)
 
@@ -82,29 +87,43 @@ class MyJobsAdapter(
 
                 transaction.update(
                     jobRef,
-                    "status", "completed",
-                    "rewardGiven", true
+                    mapOf(
+                        "status" to "completed",
+                        "rewardGiven" to true
+                    )
                 )
 
-                transaction.set(
+                transaction.update(
                     userRef,
                     mapOf(
                         "rewardPoints" to points + 10,
                         "completedTasks" to completed + 1
-                    ),
-                    SetOptions.merge()
+                    )
                 )
 
                 null
+
             }.addOnSuccessListener {
+
                 Toast.makeText(
-                    holder.itemView.context,
+                    context,
                     "Job completed +10 points 🎉",
                     Toast.LENGTH_SHORT
                 ).show()
 
-                list.removeAt(position)
-                notifyItemRemoved(position)
+                val index = holder.adapterPosition
+
+                if (index != RecyclerView.NO_POSITION) {
+                    list.removeAt(index)
+                    notifyItemRemoved(index)
+                }
+
+                // Go Home ONLY if list empty
+                if (list.isEmpty()) {
+                    context.startActivity(
+                        Intent(context, HomeActivity::class.java)
+                    )
+                }
             }
         }
     }

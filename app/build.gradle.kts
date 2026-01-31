@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+
+
 }
 
 android {
@@ -47,21 +49,24 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.activity:activity-ktx:1.9.0")
 
-    // Firebase (USE ONLY ONE BOM)
+    // Firebase BOM
     implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
+
+    // Firebase Services
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
+    implementation(libs.firebase.messaging)
 
-    // 🔥 OpenStreetMap (NO PAYMENT)
-    implementation("org.osmdroid:osmdroid-android:6.1.16")
+    // OpenStreetMap
+    implementation("org.osmdroid:osmdroid-android:6.1.18")
 
-    // 📍 GPS Location
+    // Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation(libs.androidx.activity)
 
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    implementation("org.osmdroid:osmdroid-android:6.1.18")
-
 }

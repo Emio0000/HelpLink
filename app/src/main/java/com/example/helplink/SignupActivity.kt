@@ -38,21 +38,25 @@ class SignupActivity : AppCompatActivity() {
             }
 
             if (password.length < 6) {
-                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Password must be at least 6 characters",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
-            signupBtn.isEnabled = false
-
             auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener { authResult ->
+                .addOnSuccessListener { result ->
 
-                    val uid = authResult.user?.uid ?: return@addOnSuccessListener
-                    val userEmail = authResult.user?.email ?: ""
+                    val uid = result.user!!.uid
+                    val userEmail = result.user!!.email!!
 
                     val userMap = hashMapOf(
+                        "name" to userEmail.substringBefore("@"),
                         "email" to userEmail,
-                        "role" to "requester",
+                        "role" to "user",
+                        "status" to "pending",
                         "rewardPoints" to 0,
                         "completedTasks" to 0,
                         "createdAt" to System.currentTimeMillis()
@@ -62,18 +66,32 @@ class SignupActivity : AppCompatActivity() {
                         .document(uid)
                         .set(userMap)
                         .addOnSuccessListener {
-                            Toast.makeText(this, "Account created", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, LoginActivity::class.java))
+
+                            Toast.makeText(
+                                this,
+                                "Account created. Waiting for admin approval.",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            startActivity(
+                                Intent(this, LoginActivity::class.java)
+                            )
                             finish()
                         }
                         .addOnFailureListener {
-                            Toast.makeText(this, "Firestore error", Toast.LENGTH_SHORT).show()
-                            signupBtn.isEnabled = true
+                            Toast.makeText(
+                                this,
+                                it.message,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-                    signupBtn.isEnabled = true
+                    Toast.makeText(
+                        this,
+                        it.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
         }
 
@@ -83,4 +101,3 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 }
-

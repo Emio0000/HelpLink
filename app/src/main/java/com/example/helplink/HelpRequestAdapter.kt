@@ -1,5 +1,6 @@
 package com.example.helplink
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class HelpRequestAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val item = list[position]
 
         holder.tvTitle.text = item.title
@@ -41,6 +43,8 @@ class HelpRequestAdapter(
         holder.tvEmail.text = "By: ${item.requesterEmail}"
 
         holder.btnAccept.setOnClickListener {
+
+            val context = holder.itemView.context
             val user = auth.currentUser ?: return@setOnClickListener
 
             val helperId = user.uid
@@ -49,7 +53,7 @@ class HelpRequestAdapter(
             val requesterEmail = item.requesterEmail
             val jobId = item.id
 
-            // 1️⃣ Update help request
+            // 1) Update job
             db.collection("help_requests")
                 .document(jobId)
                 .update(
@@ -61,7 +65,7 @@ class HelpRequestAdapter(
                 )
                 .addOnSuccessListener {
 
-                    // 2️⃣ CREATE CHAT DOCUMENT (WITH EMAILS ✅)
+                    // 2) Create chat
                     val chatMap = hashMapOf(
                         "jobId" to jobId,
                         "requesterId" to requesterId,
@@ -74,22 +78,33 @@ class HelpRequestAdapter(
                     )
 
                     db.collection("chats")
-                        .document(jobId) // jobId = chatId
+                        .document(jobId)
                         .set(chatMap)
 
                     Toast.makeText(
-                        holder.itemView.context,
-                        "Request accepted & chat created",
+                        context,
+                        "Request accepted",
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    list.removeAt(position)
-                    notifyItemRemoved(position)
+                    // 3) Remove item safely
+                    val index = holder.adapterPosition
+                    if (index != RecyclerView.NO_POSITION) {
+                        list.removeAt(index)
+                        notifyItemRemoved(index)
+                    }
+
+                    // 4) If list empty → go Home
+                    if (list.isEmpty()) {
+                        context.startActivity(
+                            Intent(context, HomeActivity::class.java)
+                        )
+                    }
                 }
                 .addOnFailureListener {
                     Toast.makeText(
-                        holder.itemView.context,
-                        "Failed to accept",
+                        context,
+                        "Failed to accept request",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

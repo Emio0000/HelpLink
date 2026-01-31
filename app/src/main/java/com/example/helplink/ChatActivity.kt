@@ -30,25 +30,30 @@ class ChatActivity : AppCompatActivity() {
             .collection("messages")
             .orderBy("timestamp", Query.Direction.ASCENDING)
             .addSnapshotListener { snapshot, _ ->
-                val builder = StringBuilder()
+
+                val text = StringBuilder()
+
                 snapshot?.forEach {
                     val sender = it.getString("senderId")
-                    val text = it.getString("text")
-                    builder.append(
-                        if (sender == uid) "You: $text\n"
-                        else "Other: $text\n"
-                    )
+                    val msg = it.getString("text")
+
+                    if (sender == uid)
+                        text.append("You: $msg\n")
+                    else
+                        text.append("Other: $msg\n")
                 }
-                tvChat.text = builder.toString()
+
+                tvChat.text = text.toString()
             }
 
         btnSend.setOnClickListener {
-            val msg = etMessage.text.toString().trim()
-            if (msg.isEmpty()) return@setOnClickListener
 
-            val data = mapOf(
+            val message = etMessage.text.toString().trim()
+            if (message.isEmpty()) return@setOnClickListener
+
+            val data = hashMapOf(
                 "senderId" to uid,
-                "text" to msg,
+                "text" to message,
                 "timestamp" to System.currentTimeMillis()
             )
 
@@ -59,10 +64,7 @@ class ChatActivity : AppCompatActivity() {
 
             db.collection("chats")
                 .document(chatId)
-                .update(
-                    "lastMessage", msg,
-                    "updatedAt", System.currentTimeMillis()
-                )
+                .update("lastMessage", message)
 
             etMessage.text.clear()
         }

@@ -10,8 +10,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class ChatsActivity : AppCompatActivity() {
 
-    private lateinit var adapter: ChatsAdapter
     private val chatList = mutableListOf<ChatRoom>()
+    private lateinit var adapter: ChatsAdapter
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
@@ -24,13 +24,11 @@ class ChatsActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
 
         adapter = ChatsAdapter(chatList) { chat ->
+
             val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra("chatId", chat.jobId)
-            intent.putExtra(
-                "otherUserId",
-                chat.getOtherUserId(auth.currentUser!!.uid)
-            )
             startActivity(intent)
+
         }
 
         rv.adapter = adapter
@@ -39,17 +37,22 @@ class ChatsActivity : AppCompatActivity() {
     }
 
     private fun loadChats() {
+
         val uid = auth.currentUser?.uid ?: return
 
         db.collection("chats")
             .whereArrayContains("participants", uid)
             .addSnapshotListener { snapshot, _ ->
+
                 chatList.clear()
-                snapshot?.forEach { doc ->
-                    val chat = doc.toObject(ChatRoom::class.java)
+
+                snapshot?.forEach {
+                    val chat = it.toObject(ChatRoom::class.java)
                     chatList.add(chat)
                 }
+
                 adapter.notifyDataSetChanged()
             }
     }
 }
+
