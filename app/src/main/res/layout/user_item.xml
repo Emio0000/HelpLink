@@ -1,40 +1,57 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:background="@drawable/white_card_bg"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp"
+    android:elevation="4dp">
 
+    <!-- USER NAME -->
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"
-        android:textStyle="bold" />
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
+    <!-- USER EMAIL -->
     <TextView
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email" />
+        android:textColor="#555555"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"/>
 
+    <!-- BUTTON ROW -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="12dp">
 
         <Button
             android:id="@+id/btnApprove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Approve" />
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:text="Approve"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#4CAF50"/>
 
         <Button
             android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
             android:text="Delete"
-            android:layout_marginStart="8dp" />
+            android:textColor="@android:color/white"
+            android:backgroundTint="#D81B60"
+            android:layout_marginStart="8dp"/>
 
     </LinearLayout>
 

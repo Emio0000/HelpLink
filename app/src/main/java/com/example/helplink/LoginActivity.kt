@@ -37,11 +37,20 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // 🔥 Firebase Authentication
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
 
-                    val uid = auth.currentUser!!.uid
+                    Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
 
+                    val uid = auth.currentUser?.uid
+
+                    if (uid == null) {
+                        Toast.makeText(this, "User ID is null", Toast.LENGTH_LONG).show()
+                        return@addOnSuccessListener
+                    }
+
+                    // 🔥 Firestore Check
                     db.collection("users")
                         .document(uid)
                         .get()
@@ -53,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
                                     "No user record found",
                                     Toast.LENGTH_LONG
                                 ).show()
-                                FirebaseAuth.getInstance().signOut()
+                                auth.signOut()
                                 return@addOnSuccessListener
                             }
 
@@ -81,9 +90,20 @@ class LoginActivity : AppCompatActivity() {
 
                             finish()
                         }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                this,
+                                "Firestore Error: ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        this,
+                        "Auth Error: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
         }
 

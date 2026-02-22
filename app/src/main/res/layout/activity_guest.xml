@@ -1,22 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:background="#DCEFF6">
 
-    <TextView
-        android:text="Your account is waiting for admin approval"
-        android:textSize="18sp"
-        android:layout_marginBottom="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <!-- TOP PINK BAR -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#D81B60"/>
 
-    <Button
-        android:id="@+id/logoutBtn"
-        android:text="Logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <!-- CENTER CONTENT -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="24dp"
+        android:orientation="vertical">
+
+        <!-- WHITE CARD -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_card_bg"
+            android:elevation="8dp"
+            android:padding="24dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <!-- ICON -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⏳"
+                android:textSize="40sp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- TITLE -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Pending Approval"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#D81B60"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- MESSAGE -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your account has been created successfully.\nPlease wait for admin approval before accessing the app."
+                android:textSize="14sp"
+                android:textColor="#555555"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- LOGOUT BUTTON -->
+            <Button
+                android:id="@+id/logoutBtn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Logout"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#D81B60"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

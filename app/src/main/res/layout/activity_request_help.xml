@@ -1,38 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="24dp"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#DCEFF6">
 
-    <TextView
-        android:text="Request Help"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/etTitle"
-        android:hint="Help Title"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etDescription"
-        android:hint="Describe your problem"
-        android:layout_marginTop="12dp"
-        android:minLines="3"
-        android:gravity="top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <!-- Top Red Header -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#D81B60"/>
 
-    <Button
-        android:id="@+id/btnSubmitRequest"
-        android:text="Submit Request"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</LinearLayout>
+            <!-- Title -->
+            <TextView
+                android:text="Request Help"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#D81B60"
+                android:layout_marginBottom="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <!-- White Card -->
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="@drawable/white_card_bg"
+                android:padding="20dp"
+                android:elevation="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Title Input -->
+                <EditText
+                    android:id="@+id/etTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Help Title"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#888888"
+                    android:background="@android:color/white"
+                    android:padding="12dp"
+                    android:elevation="2dp"/>
+
+                <!-- Description Input -->
+                <EditText
+                    android:id="@+id/etDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:hint="Describe your problem"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#888888"
+                    android:background="@android:color/white"
+                    android:padding="12dp"
+                    android:layout_marginTop="12dp"
+                    android:gravity="top"
+                    android:elevation="2dp"/>
+
+                <!-- Submit Button -->
+                <Button
+                    android:id="@+id/btnSubmitRequest"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Submit Request"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#D81B60"
+                    android:layout_marginTop="20dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

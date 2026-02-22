@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#DCEFF6">
+
+    <!-- Top Red Header -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#D81B60"/>
 
     <TextView
-        android:text="Open Help Requests"
+        android:text="Available Requests"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginBottom="12dp"
+        android:textColor="#D81B60"
+        android:padding="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRequests"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:padding="12dp"/>
+
 </LinearLayout>
