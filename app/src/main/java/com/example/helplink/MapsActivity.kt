@@ -4,10 +4,13 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,8 +18,6 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import android.widget.Button
-import android.widget.Toast
 
 class MapsActivity : AppCompatActivity() {
 
@@ -42,6 +43,38 @@ class MapsActivity : AppCompatActivity() {
 
         val btnRecenter = findViewById<Button>(R.id.btnRecenter)
 
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        bottomNav.selectedItemId = R.id.nav_maps
+
+        bottomNav.setOnItemSelectedListener {
+
+            when (it.itemId) {
+
+                R.id.nav_home -> {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
+                    true
+                }
+
+                R.id.nav_chats -> {
+                    startActivity(Intent(this, ChatsActivity::class.java))
+                    finish()
+                    true
+                }
+
+                R.id.nav_maps -> true
+
+                R.id.nav_jobs -> {
+                    startActivity(Intent(this, MyJobsActivity::class.java))
+                    finish()
+                    true
+                }
+
+                else -> false
+            }
+        }
+
         locationClient = LocationServices.getFusedLocationProviderClient(this)
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
@@ -49,7 +82,6 @@ class MapsActivity : AppCompatActivity() {
         showUserLocation()
         loadNearbyTasks()
 
-        // Recenter button
         btnRecenter.setOnClickListener {
             if (lastLocation != null) {
                 map.controller.setCenter(lastLocation)
@@ -59,9 +91,6 @@ class MapsActivity : AppCompatActivity() {
         }
     }
 
-    // ======================
-    // LIVE USER LOCATION
-    // ======================
     private fun showUserLocation() {
 
         if (ActivityCompat.checkSelfPermission(
@@ -76,7 +105,9 @@ class MapsActivity : AppCompatActivity() {
         ).build()
 
         locationCallback = object : LocationCallback() {
+
             override fun onLocationResult(result: LocationResult) {
+
                 val loc = result.lastLocation ?: return
                 val point = GeoPoint(loc.latitude, loc.longitude)
                 lastLocation = point
@@ -84,7 +115,9 @@ class MapsActivity : AppCompatActivity() {
                 map.controller.setCenter(point)
 
                 if (userMarker == null) {
+
                     userMarker = Marker(map).apply {
+
                         position = point
                         title = "You are here"
                         setAnchor(
@@ -92,8 +125,11 @@ class MapsActivity : AppCompatActivity() {
                             Marker.ANCHOR_BOTTOM
                         )
                     }
+
                     map.overlays.add(userMarker)
+
                 } else {
+
                     userMarker!!.position = point
                 }
 
@@ -108,9 +144,6 @@ class MapsActivity : AppCompatActivity() {
         )
     }
 
-    // ======================
-    // LOAD TASK MARKERS
-    // ======================
     private fun loadNearbyTasks() {
 
         db.collection("help_requests")
@@ -129,10 +162,12 @@ class MapsActivity : AppCompatActivity() {
                     val lng = doc.getDouble("lng") ?: continue
 
                     val marker = Marker(map).apply {
+
                         position = GeoPoint(lat, lng)
                         title = doc.getString("title")
                         subDescription =
                             "By: ${doc.getString("requesterEmail")}"
+
                         setAnchor(
                             Marker.ANCHOR_CENTER,
                             Marker.ANCHOR_BOTTOM
@@ -159,9 +194,6 @@ class MapsActivity : AppCompatActivity() {
             }
     }
 
-    // ======================
-    // ACCEPT TASK DIALOG
-    // ======================
     private fun showAcceptDialog(
         jobId: String,
         title: String,
@@ -211,11 +243,9 @@ class MapsActivity : AppCompatActivity() {
             .show()
     }
 
-    // ======================
-    // STOP GPS
-    // ======================
     override fun onDestroy() {
         super.onDestroy()
+
         if (::locationCallback.isInitialized) {
             locationClient.removeLocationUpdates(locationCallback)
         }

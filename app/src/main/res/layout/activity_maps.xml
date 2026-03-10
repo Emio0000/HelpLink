@@ -1,56 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#DCEFF6">
 
-    <!-- MAP VIEW -->
-    <org.osmdroid.views.MapView
-        android:id="@+id/map"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNavigationView">
 
-    <!-- TOP INFO CARD -->
-    <LinearLayout
+        <org.osmdroid.views.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:background="@drawable/white_card_bg"
+            android:elevation="8dp">
+
+            <TextView
+                android:text="Nearby Help Tasks"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#D81B60"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="Tap a marker to view details and accept the job."
+                android:textSize="13sp"
+                android:textColor="#777777"
+                android:layout_marginTop="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnRecenter"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:text="📍"
+            android:textSize="20sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_primary"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:elevation="10dp"/>
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="16dp"
-        android:padding="16dp"
-        android:background="@drawable/white_card_bg"
-        android:elevation="8dp">
+        android:layout_alignParentBottom="true"
+        android:background="#D81B60"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:menu="@menu/bottom_nav_menu"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nearby Help Tasks"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:textColor="#D81B60" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tap a marker to view details and accept the job."
-            android:textSize="13sp"
-            android:textColor="#777777"
-            android:layout_marginTop="4dp"/>
-
-    </LinearLayout>
-
-    <!-- FLOATING RECENTER BUTTON -->
-    <Button
-        android:id="@+id/btnRecenter"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:text="📍"
-        android:textSize="20sp"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_primary"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:elevation="10dp"/>
-
-</FrameLayout>
+</RelativeLayout>
