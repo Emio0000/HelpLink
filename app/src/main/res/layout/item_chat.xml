@@ -33,6 +33,13 @@
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <View
+            android:id="@+id/unreadDot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/red_dot"
+            android:visibility="gone"/>
+
 
     </LinearLayout>
 

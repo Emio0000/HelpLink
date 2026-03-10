@@ -48,19 +48,8 @@ class MyJobsAdapter(
 
             val context = holder.itemView.context
 
-            db.collection("chats")
-                .document(job.id)
-                .set(
-                    mapOf(
-                        "taskId" to job.id,
-                        "requesterEmail" to job.requesterEmail,
-                        "helperId" to job.helperId
-                    ),
-                    SetOptions.merge()
-                )
-
             val intent = Intent(context, ChatActivity::class.java)
-            intent.putExtra("taskId", job.id)
+            intent.putExtra("chatId", job.id)
             context.startActivity(intent)
         }
 

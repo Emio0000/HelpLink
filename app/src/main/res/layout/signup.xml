@@ -13,86 +13,152 @@
         android:background="#D81B60"/>
 
     <!-- CENTER CONTENT -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="24dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- WHITE CARD -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/white_card_bg"
-            android:elevation="8dp"
-            android:padding="24dp">
+            android:gravity="center"
+            android:padding="24dp"
+            android:orientation="vertical">
 
-            <!-- TITLE -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Create Account"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="#D81B60"
-                android:layout_marginBottom="4dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Join HelpLink community"
-                android:textColor="#777777"
-                android:layout_marginBottom="20dp"/>
-
-            <!-- EMAIL -->
-            <EditText
-                android:id="@+id/signupEmail"
+            <!-- WHITE CARD -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Email"
-                android:textColor="@android:color/black"
-                android:textColorHint="#777777"
-                android:inputType="textEmailAddress"
-                android:padding="12dp"
-                android:background="@drawable/white_card_bg"/>
-
-            <!-- PASSWORD -->
-            <EditText
-                android:id="@+id/signupPassword"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Password"
-                android:textColor="@android:color/black"
-                android:textColorHint="#777777"
-                android:inputType="textPassword"
-                android:padding="12dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:background="@drawable/white_card_bg"
-                android:layout_marginTop="12dp"/>
+                android:elevation="8dp"
+                android:padding="24dp">
 
-            <!-- SIGN UP BUTTON -->
-            <Button
-                android:id="@+id/signupBtn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="SIGN UP"
-                android:textColor="@android:color/white"
-                android:backgroundTint="#D81B60"
-                android:layout_marginTop="20dp"/>
+                <!-- TITLE -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create Account"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#D81B60"
+                    android:layout_marginBottom="4dp"/>
 
-            <!-- BACK TO LOGIN -->
-            <TextView
-                android:id="@+id/backToLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Already have an account? Login"
-                android:textColor="#D81B60"
-                android:gravity="center"
-                android:layout_marginTop="16dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Join HelpLink community"
+                    android:textColor="#777777"
+                    android:layout_marginBottom="20dp"/>
+
+                <!-- FULL NAME -->
+                <EditText
+                    android:id="@+id/fullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Full Name (as per IC)"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#777777"
+                    android:padding="12dp"
+                    android:background="@drawable/white_card_bg"/>
+
+                <!-- EMAIL -->
+                <EditText
+                    android:id="@+id/signupEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Email"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#777777"
+                    android:inputType="textEmailAddress"
+                    android:padding="12dp"
+                    android:background="@drawable/white_card_bg"
+                    android:layout_marginTop="12dp"/>
+
+                <!-- PASSWORD -->
+                <EditText
+                    android:id="@+id/signupPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Password"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#777777"
+                    android:inputType="textPassword"
+                    android:padding="12dp"
+                    android:background="@drawable/white_card_bg"
+                    android:layout_marginTop="12dp"/>
+
+                <!-- STREET -->
+                <EditText
+                    android:id="@+id/street"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Street / Block"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#777777"
+                    android:padding="12dp"
+                    android:background="@drawable/white_card_bg"
+                    android:layout_marginTop="12dp"/>
+
+                <!-- HOUSE NUMBER -->
+                <EditText
+                    android:id="@+id/houseNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="House / Unit Number"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#777777"
+                    android:padding="12dp"
+                    android:background="@drawable/white_card_bg"
+                    android:layout_marginTop="12dp"/>
+
+                <!-- RESIDENT TYPE -->
+                <EditText
+                    android:id="@+id/residentType"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Resident Type (Owner / Tenant / Family)"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#777777"
+                    android:padding="12dp"
+                    android:background="@drawable/white_card_bg"
+                    android:layout_marginTop="12dp"/>
+
+                <!-- RESIDENT CODE -->
+                <EditText
+                    android:id="@+id/residentCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:hint="Resident Verification Code"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="#777777"
+                    android:padding="12dp"
+                    android:background="@drawable/white_card_bg"
+                    android:layout_marginTop="12dp"/>
+
+                <!-- SIGN UP BUTTON -->
+                <Button
+                    android:id="@+id/signupBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="SIGN UP"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#D81B60"
+                    android:layout_marginTop="20dp"/>
+
+                <!-- BACK TO LOGIN -->
+                <TextView
+                    android:id="@+id/backToLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account? Login"
+                    android:textColor="#D81B60"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

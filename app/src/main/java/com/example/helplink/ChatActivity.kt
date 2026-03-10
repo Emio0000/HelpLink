@@ -30,9 +30,11 @@ class ChatActivity : AppCompatActivity() {
         val uid = auth.currentUser?.uid ?: return
 
         adapter = MessageAdapter(messageList)
+
         rv.layoutManager = LinearLayoutManager(this)
         rv.adapter = adapter
 
+        // Listen for messages (real-time)
         db.collection("chats")
             .document(chatId)
             .collection("messages")
@@ -47,15 +49,19 @@ class ChatActivity : AppCompatActivity() {
                 }
 
                 adapter.notifyDataSetChanged()
-                rv.scrollToPosition(messageList.size - 1)
+
+                if (messageList.isNotEmpty()) {
+                    rv.scrollToPosition(messageList.size - 1)
+                }
             }
 
+        // Send message
         btnSend.setOnClickListener {
 
             val text = etMessage.text.toString().trim()
             if (text.isEmpty()) return@setOnClickListener
 
-            val data = hashMapOf(
+            val messageData = hashMapOf(
                 "senderId" to uid,
                 "text" to text,
                 "timestamp" to System.currentTimeMillis()
@@ -64,9 +70,21 @@ class ChatActivity : AppCompatActivity() {
             db.collection("chats")
                 .document(chatId)
                 .collection("messages")
-                .add(data)
+                .add(messageData)
+                .addOnSuccessListener {
+
+                    db.collection("chats")
+                        .document(chatId)
+                        .update(
+                            mapOf(
+                                "lastMessage" to text,
+                                "lastSenderId" to uid,
+                                "updatedAt" to System.currentTimeMillis()
+                            )
+                        )
+                }
 
             etMessage.text.clear()
         }
+        }
     }
-}

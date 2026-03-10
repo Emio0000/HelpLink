@@ -6,7 +6,8 @@ data class ChatRoom(
     var requesterEmail: String = "",
     var helperId: String = "",
     var helperEmail: String = "",
-    var lastMessage: String = ""
+    var lastMessage: String = "",
+    var unread: Boolean = false
 ) {
 
     fun getOtherUserEmail(currentUserId: String): String {

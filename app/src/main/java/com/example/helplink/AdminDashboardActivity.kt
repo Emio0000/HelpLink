@@ -34,16 +34,22 @@ class AdminDashboardActivity : AppCompatActivity() {
         db.collection("users")
             .addSnapshotListener { snapshot, _ ->
 
+                snapshot ?: return@addSnapshotListener
+
                 pendingList.clear()
                 activeList.clear()
 
-                for (doc in snapshot!!) {
+                for (doc in snapshot) {
 
                     val user = User(
-                        doc.id,
-                        doc.getString("name") ?: "",
-                        doc.getString("email") ?: "",
-                        doc.getString("status") ?: ""
+                        uid = doc.id,
+                        name = doc.getString("name") ?: "",
+                        email = doc.getString("email") ?: "",
+                        status = doc.getString("status") ?: "",
+                        street = doc.getString("street") ?: "",
+                        houseNumber = doc.getString("houseNumber") ?: "",
+                        residentType = doc.getString("residentType") ?: "",
+                        residentCode = doc.getString("residentCode") ?: ""
                     )
 
                     if (user.status == "pending") {
@@ -72,6 +78,7 @@ class AdminDashboardActivity : AppCompatActivity() {
     }
 
     private fun approveUser(user: User) {
+
         db.collection("users")
             .document(user.uid)
             .update(
@@ -83,6 +90,7 @@ class AdminDashboardActivity : AppCompatActivity() {
     }
 
     private fun deleteUser(user: User) {
+
         db.collection("users")
             .document(user.uid)
             .delete()

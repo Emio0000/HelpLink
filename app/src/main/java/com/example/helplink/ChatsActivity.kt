@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -33,7 +34,44 @@ class ChatsActivity : AppCompatActivity() {
 
         rv.adapter = adapter
 
+        setupBottomNav()
+
         loadChats()
+    }
+
+    private fun setupBottomNav() {
+
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        bottomNav.selectedItemId = R.id.nav_chats
+
+        bottomNav.setOnItemSelectedListener {
+
+            when (it.itemId) {
+
+                R.id.nav_home -> {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
+                    true
+                }
+
+                R.id.nav_chats -> true
+
+                R.id.nav_maps -> {
+                    startActivity(Intent(this, MapsActivity::class.java))
+                    finish()
+                    true
+                }
+
+                R.id.nav_jobs -> {
+                    startActivity(Intent(this, MyJobsActivity::class.java))
+                    finish()
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     private fun loadChats() {
@@ -47,12 +85,13 @@ class ChatsActivity : AppCompatActivity() {
                 chatList.clear()
 
                 snapshot?.forEach {
+
                     val chat = it.toObject(ChatRoom::class.java)
                     chatList.add(chat)
+
                 }
 
                 adapter.notifyDataSetChanged()
             }
     }
 }
-

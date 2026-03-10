@@ -27,6 +27,42 @@
         android:textSize="13sp"
         android:layout_marginTop="4dp"/>
 
+    <!-- STREET -->
+    <TextView
+        android:id="@+id/tvStreet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#555555"
+        android:textSize="13sp"
+        android:layout_marginTop="4dp"/>
+
+    <!-- HOUSE NUMBER -->
+    <TextView
+        android:id="@+id/tvHouseNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#555555"
+        android:textSize="13sp"
+        android:layout_marginTop="2dp"/>
+
+    <!-- RESIDENT TYPE -->
+    <TextView
+        android:id="@+id/tvResidentType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#555555"
+        android:textSize="13sp"
+        android:layout_marginTop="2dp"/>
+
+    <!-- RESIDENT CODE -->
+    <TextView
+        android:id="@+id/tvResidentCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#555555"
+        android:textSize="13sp"
+        android:layout_marginTop="2dp"/>
+
     <!-- BUTTON ROW -->
     <LinearLayout
         android:layout_width="match_parent"
