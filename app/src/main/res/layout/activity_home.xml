@@ -138,7 +138,7 @@
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:layout_columnWeight="1"
-                    android:text="📋 Requests"
+                    android:text="📋 Available Jobs"
                     android:textAllCaps="false"
                     android:backgroundTint="#D81B60"
                     android:textColor="@android:color/white"
