@@ -31,6 +31,9 @@ class MapsActivity : AppCompatActivity() {
     private var userMarker: Marker? = null
     private var lastLocation: GeoPoint? = null
 
+    // 🔥 ADD THIS (controls auto-centering)
+    private var isFirstLocation = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -112,7 +115,11 @@ class MapsActivity : AppCompatActivity() {
                 val point = GeoPoint(loc.latitude, loc.longitude)
                 lastLocation = point
 
-                map.controller.setCenter(point)
+                // 🔥 FIX: ONLY CENTER ONCE
+                if (isFirstLocation) {
+                    map.controller.setCenter(point)
+                    isFirstLocation = false
+                }
 
                 if (userMarker == null) {
 
@@ -224,7 +231,9 @@ class MapsActivity : AppCompatActivity() {
                 val chatMap = hashMapOf(
                     "jobId" to jobId,
                     "requesterId" to requesterId,
+                    "requesterEmail" to requesterEmail,   // 🔥 ADD THIS
                     "helperId" to user.uid,
+                    "helperEmail" to user.email,          // 🔥 ADD THIS
                     "participants" to listOf(requesterId, user.uid),
                     "lastMessage" to "",
                     "updatedAt" to FieldValue.serverTimestamp()

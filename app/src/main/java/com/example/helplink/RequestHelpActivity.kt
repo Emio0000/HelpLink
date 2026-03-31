@@ -51,22 +51,28 @@ class RequestHelpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // 🔥 CREATE DOCUMENT WITH ID (IMPORTANT)
+            val docRef = db.collection("help_requests").document()
+
             val requestData = hashMapOf(
+                "id" to docRef.id, // ✅ ensures jobId works everywhere
                 "title" to title,
                 "description" to description,
                 "requesterId" to user.uid,
-                "requesterEmail" to user.email,
+                "requesterEmail" to (user.email ?: "Unknown User"), // ✅ FIX NULL EMAIL
                 "status" to "open",
                 "lat" to lat,
                 "lng" to lng,
                 "createdAt" to System.currentTimeMillis()
             )
 
-            db.collection("help_requests")
-                .add(requestData)
+            docRef.set(requestData)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Task posted with location", Toast.LENGTH_SHORT).show()
                     finish()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Failed to post task", Toast.LENGTH_SHORT).show()
                 }
         }
     }

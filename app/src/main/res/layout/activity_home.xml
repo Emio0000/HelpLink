@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
+    <!-- SCROLL CONTENT -->
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView">
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:orientation="vertical"
@@ -26,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="18dp">
 
-                <!-- Avatar -->
                 <TextView
                     android:id="@+id/tvAvatar"
                     android:layout_width="60dp"
@@ -39,7 +41,6 @@
                     android:background="@drawable/avatar_bg"
                     android:layout_marginEnd="14dp"/>
 
-                <!-- User Info -->
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
@@ -74,7 +75,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- Reward Points -->
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_weight="1"
@@ -82,23 +82,22 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="Reward Points"
                         android:textSize="13sp"
-                        android:textColor="#777"/>
+                        android:textColor="#777"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/tvRewardPoints"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="0"
                         android:textSize="22sp"
                         android:textStyle="bold"
-                        android:textColor="#D81B60"/>
+                        android:textColor="#D81B60"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <!-- Badge -->
                 <LinearLayout
                     android:orientation="vertical"
                     android:gravity="end"
@@ -107,121 +106,142 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="Badge"
                         android:textSize="13sp"
-                        android:textColor="#777"/>
+                        android:textColor="#777"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/tvBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="Bronze"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="#D81B60"
                         android:padding="6dp"
-                        android:background="@drawable/badge_bg"/>
+                        android:background="@drawable/badge_bg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- DASHBOARD BUTTON GRID -->
+            <!-- BUTTON GRID -->
             <GridLayout
                 android:columnCount="2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- BUTTON STYLE FIXED -->
                 <Button
                     android:id="@+id/btnOfferHelp"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="70dp"
                     android:layout_columnWeight="1"
                     android:text="📋 Available Jobs"
                     android:textAllCaps="false"
                     android:backgroundTint="#D81B60"
                     android:textColor="@android:color/white"
-                    android:layout_margin="6dp"/>
+                    android:layout_margin="6dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:padding="12dp"
+                    android:layout_gravity="fill"/>
 
                 <Button
                     android:id="@+id/btnMyJobs"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="70dp"
                     android:layout_columnWeight="1"
                     android:text="🛠 My Jobs"
                     android:textAllCaps="false"
                     android:backgroundTint="#D81B60"
                     android:textColor="@android:color/white"
-                    android:layout_margin="6dp"/>
+                    android:layout_margin="6dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:padding="12dp"
+                    android:layout_gravity="fill"/>
 
                 <Button
                     android:id="@+id/btnLeaderboard"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="70dp"
                     android:layout_columnWeight="1"
                     android:text="🏆 Leaderboard"
                     android:textAllCaps="false"
                     android:backgroundTint="#D81B60"
                     android:textColor="@android:color/white"
-                    android:layout_margin="6dp"/>
+                    android:layout_margin="6dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:padding="12dp"
+                    android:layout_gravity="fill"/>
 
                 <Button
                     android:id="@+id/btnChats"
                     android:layout_width="0dp"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="70dp"
                     android:layout_columnWeight="1"
                     android:text="💬 Chats"
                     android:textAllCaps="false"
                     android:backgroundTint="#D81B60"
                     android:textColor="@android:color/white"
-                    android:layout_margin="6dp"/>
+                    android:layout_margin="6dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:padding="12dp"
+                    android:layout_gravity="fill"/>
 
                 <Button
                     android:id="@+id/btnMaps"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="70dp"
                     android:layout_columnSpan="2"
                     android:text="🗺 Maps"
                     android:textAllCaps="false"
                     android:backgroundTint="#D81B60"
                     android:textColor="@android:color/white"
-                    android:layout_margin="6dp"/>
-
+                    android:layout_margin="6dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:padding="12dp"/>
             </GridLayout>
 
         </LinearLayout>
 
     </ScrollView>
 
-    <!-- REQUEST HELP BUTTON -->
+    <!-- FLOATING BUTTON -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabRequestHelp"
         android:layout_width="72dp"
         android:layout_height="72dp"
         android:src="@android:drawable/ic_input_add"
-        android:layout_margin="20dp"
-        android:layout_above="@id/bottomNavigationView"
-        android:layout_alignParentEnd="true"
-
         android:tint="#FFFFFF"
         android:backgroundTint="#D81B60"
-
-        android:elevation="12dp"
-        android:translationZ="12dp"
-
-        app:rippleColor="#D81B60"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         app:fabCustomSize="72dp"/>
 
-    <!-- BOTTOM NAVIGATION -->
+    <!-- BOTTOM NAV -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="#D81B60"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
         app:menu="@menu/bottom_nav_menu"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

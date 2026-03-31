@@ -25,17 +25,14 @@ class ChatsActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this)
 
         adapter = ChatsAdapter(chatList) { chat ->
-
             val intent = Intent(this, ChatActivity::class.java)
             intent.putExtra("chatId", chat.jobId)
             startActivity(intent)
-
         }
 
         rv.adapter = adapter
 
         setupBottomNav()
-
         loadChats()
     }
 
@@ -86,10 +83,22 @@ class ChatsActivity : AppCompatActivity() {
 
                 snapshot?.forEach {
 
-                    val chat = it.toObject(ChatRoom::class.java)
-                    chatList.add(chat)
+                    try {
+                        val chat = it.toObject(ChatRoom::class.java)
 
+                        // 🔥 SAFE handling for missing updatedAt
+                        val firestoreTime = it.getLong("updatedAt")
+                        chat.updatedAt = firestoreTime ?: 0L
+
+                        chatList.add(chat)
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
+
+                // 🔥 SORT newest on TOP
+                chatList.sortByDescending { it.updatedAt }
 
                 adapter.notifyDataSetChanged()
             }
