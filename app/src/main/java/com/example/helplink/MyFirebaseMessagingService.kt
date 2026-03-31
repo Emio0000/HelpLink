@@ -18,6 +18,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val title = message.notification?.title ?: "HelpLink"
         val body = message.notification?.body ?: "You have a new notification"
 
+        // 🔥 FIX: Block login-related notification (avoid duplicate)
+        if (body.contains("login", ignoreCase = true)) {
+            return
+        }
+
         showNotification(title, body)
     }
 
@@ -29,13 +34,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent,
+            this,
+            0,
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+        // 🔥 Create notification channel (Android 8+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             val channel = NotificationChannel(

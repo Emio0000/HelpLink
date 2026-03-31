@@ -1,12 +1,20 @@
 package com.example.helplink
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -27,6 +35,21 @@ class LoginActivity : AppCompatActivity() {
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val goToSignup = findViewById<TextView>(R.id.goToSignup)
 
+        // 🔥 Request notification permission (Android 13+)
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    101
+                )
+            }
+        }
+
         loginBtn.setOnClickListener {
 
             val email = emailInput.text.toString().trim()
@@ -40,6 +63,8 @@ class LoginActivity : AppCompatActivity() {
             // 🔥 Firebase Authentication
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
+
+                    showLoginNotification() // 🔥 ADD THIS
 
                     Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
 
@@ -109,6 +134,40 @@ class LoginActivity : AppCompatActivity() {
 
         goToSignup.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
+        }
+    }
+
+    // 🔔 LOGIN NOTIFICATION FUNCTION
+    private fun showLoginNotification() {
+
+        val channelId = "login_channel"
+
+        // Create channel (Android 8+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Login Notifications",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+
+            val manager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(channel)
+        }
+
+        val builder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("Login Successful ✅")
+            .setContentText("Welcome back to HelpLink!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        val manager = NotificationManagerCompat.from(this)
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            manager.notify(1, builder.build())
         }
     }
 }

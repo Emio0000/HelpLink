@@ -61,6 +61,10 @@ class AdminDashboardActivity : AppCompatActivity() {
                     }
                 }
 
+                // 🔥 SIMPLE FIX: newest appear at top
+                pendingList.reverse()
+                activeList.reverse()
+
                 rvPending.adapter = UserAdapter(
                     pendingList,
                     true,
@@ -81,12 +85,7 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         db.collection("users")
             .document(user.uid)
-            .update(
-                mapOf(
-                    "status" to "active",
-                    "notify" to "approved"
-                )
-            )
+            .update("status", "active")
     }
 
     private fun deleteUser(user: User) {

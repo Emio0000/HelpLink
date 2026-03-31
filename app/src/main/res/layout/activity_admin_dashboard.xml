@@ -1,93 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical"
+    android:background="#F5F5F5">
 
+    <!-- HEADER -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="65dp"
+        android:background="#D81B60"
+        android:gravity="center_vertical"
+        android:paddingStart="20dp"
+        android:elevation="6dp">
 
-        <!-- HEADER -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="#D81B60"
-            android:gravity="center_vertical"
-            android:paddingStart="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Admin Dashboard"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="20dp"
+            android:text="Admin Dashboard"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+    <!-- CONTENT -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Pending Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pending Approvals"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#D81B60"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Pending Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:background="@drawable/white_card_bg"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
-            <!-- Pending Users Title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pending Approvals"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#D81B60"
-                android:layout_marginBottom="8dp"/>
-
-            <!-- Pending Users Card -->
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPending"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/white_card_bg"
-                android:elevation="6dp"
-                android:padding="16dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent"/>
+        </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvPending"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"/>
-            </LinearLayout>
+        <!-- Active Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Active Users"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#D81B60"
+            android:layout_marginBottom="8dp"/>
 
-            <!-- Active Users Title -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Active Users"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#D81B60"
-                android:layout_marginBottom="8dp"/>
+        <!-- Active Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/white_card_bg"
+            android:elevation="6dp"
+            android:padding="12dp"
+            android:orientation="vertical">
 
-            <!-- Active Users Card -->
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvActive"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/white_card_bg"
-                android:elevation="6dp"
-                android:padding="16dp"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvActive"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"/>
-            </LinearLayout>
-
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

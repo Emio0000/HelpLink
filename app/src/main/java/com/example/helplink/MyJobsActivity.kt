@@ -64,6 +64,7 @@ class MyJobsActivity : AppCompatActivity() {
 
         val user = auth.currentUser ?: return
 
+        // 🔥 SIMPLE SORT (NO INDEX NEEDED)
         db.collection("help_requests")
             .whereEqualTo("helperId", user.uid)
             .whereEqualTo("status", "accepted")
@@ -72,11 +73,18 @@ class MyJobsActivity : AppCompatActivity() {
 
                 jobList.clear()
 
+                val tempList = mutableListOf<HelpRequest>()
+
                 for (doc in result) {
                     val job = doc.toObject(HelpRequest::class.java)
                     job.id = doc.id
-                    jobList.add(job)
+                    tempList.add(job)
                 }
+
+                // 🔥 NEWEST AT TOP
+                tempList.reverse()
+
+                jobList.addAll(tempList)
 
                 adapter.notifyDataSetChanged()
             }
