@@ -31,7 +31,6 @@ class MapsActivity : AppCompatActivity() {
     private var userMarker: Marker? = null
     private var lastLocation: GeoPoint? = null
 
-    // 🔥 ADD THIS (controls auto-centering)
     private var isFirstLocation = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +44,6 @@ class MapsActivity : AppCompatActivity() {
         map.controller.setZoom(17.0)
 
         val btnRecenter = findViewById<Button>(R.id.btnRecenter)
-
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         bottomNav.selectedItemId = R.id.nav_maps
@@ -115,7 +113,6 @@ class MapsActivity : AppCompatActivity() {
                 val point = GeoPoint(loc.latitude, loc.longitude)
                 lastLocation = point
 
-                // 🔥 FIX: ONLY CENTER ONCE
                 if (isFirstLocation) {
                     map.controller.setCenter(point)
                     isFirstLocation = false
@@ -124,19 +121,14 @@ class MapsActivity : AppCompatActivity() {
                 if (userMarker == null) {
 
                     userMarker = Marker(map).apply {
-
                         position = point
                         title = "You are here"
-                        setAnchor(
-                            Marker.ANCHOR_CENTER,
-                            Marker.ANCHOR_BOTTOM
-                        )
+                        setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                     }
 
                     map.overlays.add(userMarker)
 
                 } else {
-
                     userMarker!!.position = point
                 }
 
@@ -172,13 +164,9 @@ class MapsActivity : AppCompatActivity() {
 
                         position = GeoPoint(lat, lng)
                         title = doc.getString("title")
-                        subDescription =
-                            "By: ${doc.getString("requesterEmail")}"
+                        subDescription = "By: ${doc.getString("requesterEmail")}"
 
-                        setAnchor(
-                            Marker.ANCHOR_CENTER,
-                            Marker.ANCHOR_BOTTOM
-                        )
+                        setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                     }
 
                     marker.setOnMarkerClickListener { _, _ ->
@@ -213,9 +201,7 @@ class MapsActivity : AppCompatActivity() {
 
         AlertDialog.Builder(this)
             .setTitle(title)
-            .setMessage(
-                "Description:\n$description\n\nRequester:\n$requesterEmail"
-            )
+            .setMessage("Description:\n$description\n\nRequester:\n$requesterEmail")
             .setPositiveButton("Accept Task") { _, _ ->
 
                 db.collection("help_requests")
@@ -231,9 +217,9 @@ class MapsActivity : AppCompatActivity() {
                 val chatMap = hashMapOf(
                     "jobId" to jobId,
                     "requesterId" to requesterId,
-                    "requesterEmail" to requesterEmail,   // 🔥 ADD THIS
+                    "requesterEmail" to requesterEmail,
                     "helperId" to user.uid,
-                    "helperEmail" to user.email,          // 🔥 ADD THIS
+                    "helperEmail" to user.email,
                     "participants" to listOf(requesterId, user.uid),
                     "lastMessage" to "",
                     "updatedAt" to FieldValue.serverTimestamp()
@@ -243,10 +229,8 @@ class MapsActivity : AppCompatActivity() {
                     .document(jobId)
                     .set(chatMap)
 
-                startActivity(
-                    Intent(this, ChatsActivity::class.java)
-                )
-                finish()
+                // 🔥 STAY ON MAP PAGE
+                Toast.makeText(this, "Task accepted!", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Cancel", null)
             .show()

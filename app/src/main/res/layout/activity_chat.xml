@@ -4,15 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    >
+    android:background="#F5F5F5">
 
-    <!-- TOP PINK BAR -->
+    <!-- TOP BAR -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="#D81B60"
         android:gravity="center_vertical"
-        android:paddingStart="20dp">
+        android:paddingStart="20dp"
+        android:elevation="6dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,7 +24,7 @@
             android:textColor="@android:color/white"/>
     </LinearLayout>
 
-    <!-- MESSAGE LIST -->
+    <!-- MESSAGES -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMessages"
         android:layout_width="match_parent"
@@ -32,14 +33,16 @@
         android:padding="12dp"
         android:clipToPadding="false"/>
 
-    <!-- MESSAGE INPUT AREA -->
+    <!-- INPUT AREA -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="@android:color/white">
+        android:padding="10dp"
+        android:background="@android:color/white"
+        android:elevation="4dp">
 
+        <!-- 🔥 FIXED EDITTEXT -->
         <EditText
             android:id="@+id/etMessage"
             android:layout_width="0dp"
@@ -47,9 +50,12 @@
             android:layout_weight="1"
             android:background="@drawable/white_card_bg"
             android:hint="Type a message..."
-            android:paddingStart="12dp"
-            android:textSize="14sp"/>
+            android:padding="12dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:textColorHint="#888888"/>
 
+        <!-- SEND BUTTON -->
         <Button
             android:id="@+id/btnSend"
             android:layout_width="wrap_content"

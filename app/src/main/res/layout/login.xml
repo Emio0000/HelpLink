@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:background="@drawable/bg_app"> <!-- 🔥 YOUR IMAGE -->
 
     <!-- Top Red Bar -->
     <View
@@ -29,14 +29,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- LOGO -->
+            <!-- 🔥 LOGO FIXED -->
             <ImageView
                 android:id="@+id/logoImage"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:src="@drawable/helplink_logo"
                 android:layout_gravity="center"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginBottom="12dp"
+                android:scaleType="centerCrop"/>
 
             <!-- Welcome -->
             <TextView

@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
         val loginBtn = findViewById<Button>(R.id.loginBtn)
         val goToSignup = findViewById<TextView>(R.id.goToSignup)
 
-        // 🔥 Request notification permission (Android 13+)
+        // Notification permission (Android 13+)
         if (Build.VERSION.SDK_INT >= 33) {
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -60,75 +60,37 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 🔥 Firebase Authentication
             auth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener {
 
-                    showLoginNotification() // 🔥 ADD THIS
+                    // ✅ SHOW NOTIFICATION ONLY HERE
+                    showLoginNotification()
 
                     Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show()
 
-                    val uid = auth.currentUser?.uid
+                    val uid = auth.currentUser?.uid ?: return@addOnSuccessListener
 
-                    if (uid == null) {
-                        Toast.makeText(this, "User ID is null", Toast.LENGTH_LONG).show()
-                        return@addOnSuccessListener
-                    }
-
-                    // 🔥 Firestore Check
                     db.collection("users")
                         .document(uid)
                         .get()
                         .addOnSuccessListener { doc ->
 
-                            if (!doc.exists()) {
-                                Toast.makeText(
-                                    this,
-                                    "No user record found",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                auth.signOut()
-                                return@addOnSuccessListener
-                            }
-
                             val role = doc.getString("role") ?: ""
                             val status = doc.getString("status") ?: ""
 
                             if (role == "admin") {
-
-                                startActivity(
-                                    Intent(this, AdminDashboardActivity::class.java)
-                                )
-
+                                startActivity(Intent(this, AdminDashboardActivity::class.java))
                             } else if (status == "active") {
-
-                                startActivity(
-                                    Intent(this, HomeActivity::class.java)
-                                )
-
+                                startActivity(Intent(this, HomeActivity::class.java))
                             } else {
-
-                                startActivity(
-                                    Intent(this, GuestWaitingActivity::class.java)
-                                )
+                                startActivity(Intent(this, GuestWaitingActivity::class.java))
                             }
 
                             finish()
                         }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(
-                                this,
-                                "Firestore Error: ${e.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(
-                        this,
-                        "Auth Error: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(this, "Auth Error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
         }
 
@@ -137,26 +99,24 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    // 🔔 LOGIN NOTIFICATION FUNCTION
+    // 🔔 LOGIN NOTIFICATION
     private fun showLoginNotification() {
 
         val channelId = "login_channel"
 
-        // Create channel (Android 8+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
                 "Login Notifications",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(channel)
         }
 
         val builder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("Login Successful ✅")
+            .setContentTitle("Login Successful")
             .setContentText("Welcome back to HelpLink!")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 

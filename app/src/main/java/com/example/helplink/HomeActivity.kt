@@ -23,10 +23,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    companion object {
-        var loginNotified = false
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -103,6 +99,7 @@ class HomeActivity : AppCompatActivity() {
         db.collection("users")
             .document(uid)
             .addSnapshotListener { doc, _ ->
+
                 if (doc != null && doc.exists()) {
 
                     val email = doc.getString("email") ?: "User"
@@ -115,33 +112,17 @@ class HomeActivity : AppCompatActivity() {
                     tvRewardPoints.text = points.toString()
                     tvBadge.text = getBadge(points)
 
-                    // Avatar letter
-                    val letter = email.substring(0,1).uppercase()
+                    val letter = email.substring(0, 1).uppercase()
                     tvAvatar.text = letter
 
-                    // Random avatar color
                     val colors = listOf(
-                        "#F44336",
-                        "#E91E63",
-                        "#9C27B0",
-                        "#3F51B5",
-                        "#2196F3",
-                        "#009688",
-                        "#4CAF50",
-                        "#FF9800"
+                        "#F44336", "#E91E63", "#9C27B0", "#3F51B5",
+                        "#2196F3", "#009688", "#4CAF50", "#FF9800"
                     )
 
-                    val randomColor = colors.random()
-                    tvAvatar.background.setTint(Color.parseColor(randomColor))
+                    tvAvatar.background.setTint(Color.parseColor(colors.random()))
 
-                    if (!loginNotified) {
-                        showNotification(
-                            "HelpLink",
-                            "You are logged in successfully."
-                        )
-                        loginNotified = true
-                    }
-
+                    // ✅ ONLY approval notification
                     if (notify == "approved") {
 
                         showNotification(
@@ -184,13 +165,11 @@ class HomeActivity : AppCompatActivity() {
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
             val channel = NotificationChannel(
                 channelId,
                 "HelpLink Notifications",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
-
             manager.createNotificationChannel(channel)
         }
 
@@ -205,13 +184,9 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getBadge(points: Long): String {
-
         return when {
-
             points >= 100 -> "Badge: Gold 🥇"
-
             points >= 50 -> "Badge: Silver 🥈"
-
             else -> "Badge: Bronze 🥉"
         }
     }
